@@ -56,8 +56,8 @@ public class Boid {
             if (i!=dimensions-1) {
                 sb.append(" , ");
             }
-            sb.append(" )");
         }
+        sb.append(" )");
         return sb.toString();
     }
 }
