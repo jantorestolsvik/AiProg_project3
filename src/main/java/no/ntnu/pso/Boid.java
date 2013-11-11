@@ -1,5 +1,7 @@
 package no.ntnu.pso;
 
+import java.util.List;
+
 /**
  *
  * @author Jan Tore Stølsvik & Tom Glover
@@ -9,9 +11,11 @@ public class Boid {
     private double[] velocity;
     private double[] position;
     private double[] bestSeenPosition;
-    private double c1,c2,c3,r1,r2,minValue = -10.0,maxValue = 10.0;
+    private double c1,c2,c3,r1,r2,minValue = -10.0,maxValue = 10.0, bestSeenFitness;
+    private List<Boid> boids;
     
-    public Boid(int dimensions) {
+    public Boid(int dimensions, List<Boid> boids) {
+        this.boids = boids;
         this.dimensions = dimensions;
         this.velocity = new double[dimensions];
         this.position = new double[dimensions];
@@ -20,9 +24,10 @@ public class Boid {
             this.position[i] = Math.random() * 10;
             this.bestSeenPosition[i] = this.position[i];
         }
-        c1 = 0.2;
-        c2 = 2.0;
-        c3 = 0.2;
+        bestSeenFitness = Roost.fitness(position);
+        c1 = 0.5;
+        c2 = 1.5;
+        c3 = 0.8;
     }
 
     private double clamp(double value) {
@@ -41,10 +46,25 @@ public class Boid {
             //New position
             position[i] = position[i] + velocity[i];
         }
+        
+        //Best local position
+        double fitness = Roost.fitness(position);
+        if (fitness < bestSeenFitness) {
+            this.bestSeenFitness = fitness;
+            this.bestSeenPosition = position;
+        }
     }
 
     public double[] getPosition() {
         return position;
+    }
+
+    public double getBestSeenFitness() {
+        return bestSeenFitness;
+    }
+
+    public double[] getBestSeenPosition() {
+        return bestSeenPosition;
     }
 
     @Override

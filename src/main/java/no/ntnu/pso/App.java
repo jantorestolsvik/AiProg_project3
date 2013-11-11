@@ -2,8 +2,12 @@ package no.ntnu.pso;
 
 import com.sun.j3d.internal.Distance;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 /**
  *
@@ -11,22 +15,16 @@ import java.util.Scanner;
  */
 public class App 
 {
-    public static double distance(double[] x, double[] y) {
-        double sum = 0.0;
-        for (int i = 0; i < x.length; i++) {
-            sum += (x[i] - y[i]) * (x[i] - y[i]);
-        }
-        return sum;
-    }
+    static final int GLOBAL = 0;
+    static int dimensions = 0;
+    static List<Boid> boids = new ArrayList();
+    static int nrOfNeighbours = 0;
     
     public static void main( String[] args )
-    {
-        System.out.println( "Start" );
-        List<Boid> boids = new ArrayList();
+    {   
         
         Scanner in = new Scanner(System.in);
         System.out.println("How many dimensions do you want?");
-        int dimensions = 0;
         try {
             dimensions = in.nextInt();
             if (dimensions < 1) {
@@ -36,25 +34,62 @@ public class App
             e.printStackTrace();
             System.exit(1);
         }
-        
-        for (int i = 0; i < 5; i++) {
-            boids.add(new Boid(dimensions));
+                
+        System.out.println("How many boids do you want?");
+        int nrOfBoids = 0;
+        try {
+            nrOfBoids = in.nextInt();
+            if (nrOfBoids < 1) {
+                throw new Exception("Number of boids must be bigger or equal to 1");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
         }
-        double[] goal = new double[dimensions];
-        double[] bestGlobalPosition = new double[dimensions];
         
+        System.out.println("How many neighbours should each boid consult with? 0 = global knowladge");
+        try {
+            nrOfNeighbours = in.nextInt();
+            if (nrOfNeighbours < 0) {
+                throw new Exception("Number of neighbours must be bigger or equal to 0");
+            } else if (nrOfNeighbours >= nrOfBoids) {
+                throw new Exception("Number of neighbours must be less than number of boids");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        
+        for (int i = 0; i < nrOfBoids; i++) {
+            boids.add(new Boid(dimensions, boids));
+        }
+        
+        double[] bestGlobalPosition = new double[dimensions];
         double bestGlobalDistance = Double.MAX_VALUE;
         
         for (int i = 0; i < 1000; i++) {
             for (Boid boid : boids) {
-                double boidDistance = distance(boid.getPosition(), goal);
+                double boidDistance = Roost.fitness(boid.getPosition());
                 if (boidDistance < bestGlobalDistance ) {
                     bestGlobalDistance = boidDistance;
                     bestGlobalPosition = boid.getPosition().clone();
                 }
             }
+
             for (Boid boid : boids) {
-                boid.nextIteration(bestGlobalPosition);
+                if (nrOfNeighbours == GLOBAL) {
+                    boid.nextIteration(bestGlobalPosition);
+                } else {
+                    double bestNeighbourFitness = Double.MAX_VALUE;
+                    Boid bestNeighbour = null;
+                    for (Boid b : closestNeighbours(boid)) {
+                        if (b.getBestSeenFitness() < bestNeighbourFitness) {
+                            bestNeighbourFitness = b.getBestSeenFitness();
+                            bestNeighbour = b;
+                        }
+                    }
+                    boid.nextIteration(bestNeighbour.getBestSeenPosition());
+                }
             }
         }
         
@@ -63,7 +98,7 @@ public class App
         System.out.println("");
         System.out.println("Boid positions:");
         for (Boid boid : boids) {
-            System.out.println(boid);
+        System.out.println(boid);
         }
     }
     
@@ -78,5 +113,33 @@ public class App
         }
         sb.append(" )");
         return sb.toString();
+    }
+     
+    public static double distance(double[] x, double[] y) {
+        double sum = 0.0;
+        for (int i = 0; i < x.length; i++) {
+            sum += (x[i] - y[i]) * (x[i] - y[i]);
+        }
+        return sum;
+    }
+
+    private static Boid[] closestNeighbours(Boid boid) {
+        Boid[] neighbours = new Boid[nrOfNeighbours];
+        Map<Double, Boid> map = new TreeMap<Double, Boid>();
+        for (Boid b : boids) {
+            if (b != boid) {
+                map.put(distance(b.getPosition(), boid.getPosition()), b);
+            }
+        }
+        int i = 0;
+        for (double key : map.keySet()) {
+            if (i < nrOfNeighbours) {
+                neighbours[i] = map.get(key);
+                i++;   
+            } else {
+                break;
+            }
+        }
+        return neighbours;
     }
 }
