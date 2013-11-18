@@ -1,6 +1,6 @@
 package no.ntnu.pso;
 
-import com.sun.j3d.internal.Distance;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
