@@ -27,7 +27,7 @@ public class Boid {
         bestSeenFitness = Roost.fitness(position);
         c1 = 0.5;
         c2 = 1.5;
-        c3 = 0.8;
+        c3 = 1.0;
     }
 
     private double clamp(double value) {
@@ -40,6 +40,11 @@ public class Boid {
             //New velocity
             r1 = Math.random();
             r2 = Math.random();
+            
+            if (c3 > 0.4) {
+                c3 = c3 - 0.1;
+            }
+            
             velocity[i] = (c3 * velocity[i]) + (c1 * r1 * (bestSeenPosition[i] - position[i]) + (c2 * r2 * (bestGlobalPosition[i] - position[i])));
             velocity[i] = clamp(velocity[i]);
             
