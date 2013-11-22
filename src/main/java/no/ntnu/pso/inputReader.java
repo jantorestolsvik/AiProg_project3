@@ -25,7 +25,7 @@ public class inputReader {
 			while(line!=null){
 //				System.out.println(line);
 				String[] array = line.split(",");
-				Package pk = new Package(Double.parseDouble(array[0]), Double.parseDouble(array[1]), 1+Math.random()*4);
+				Package pk = new Package(Double.parseDouble(array[0]), Double.parseDouble(array[1]), 0/* 1+Math.random()*4/**/);
 //				for(String str:array){
 //					System.out.println(str);
 //				}

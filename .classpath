@@ -2,5 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/Tom/Desktop/jfreechart-1.0.16/lib/jcommon-1.0.20.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Tom/Desktop/jfreechart-1.0.16/lib/jfreechart-1.0.16.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
