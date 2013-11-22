@@ -13,18 +13,25 @@ public class Boid {
     private double[] bestSeenPosition;
     private double c1,c2,c3,r1,r2,minValue = -10.0,maxValue = 10.0, bestSeenFitness;
     private List<Boid> boids;
+    private Container container;
     
-    public Boid(int dimensions, List<Boid> boids) {
+    public Boid(int dimensions, List<Boid> boids, Container container) {
+        this.container = container;
         this.boids = boids;
         this.dimensions = dimensions;
         this.velocity = new double[dimensions];
         this.position = new double[dimensions];
         this.bestSeenPosition = new double[dimensions];
         for (int i=0;i<dimensions;i++) {
-            this.position[i] = Math.random() * 10;
+            this.position[i] = Math.random() * 2.0 - 1.9;
+            this.velocity[i] = Math.random() * 10.0 - 5.0;
             this.bestSeenPosition[i] = this.position[i];
         }
-        bestSeenFitness = Roost.fitness(position);
+        if (container != null) {
+            bestSeenFitness = container.fitness(this);
+        } else {
+            bestSeenFitness = Roost.fitness(position);
+        }
         c1 = 0.5;
         c2 = 1.5;
         c3 = 1.0;
@@ -53,11 +60,20 @@ public class Boid {
         }
         
         //Best local position
-        double fitness = Roost.fitness(position);
-        if (fitness < bestSeenFitness) {
-            this.bestSeenFitness = fitness;
-            this.bestSeenPosition = position;
+        if (container != null) {
+            double fitness = container.fitness(this);
+            if (fitness > bestSeenFitness) {
+                this.bestSeenFitness = fitness;
+                this.bestSeenPosition = position;
+            }
+        } else {
+            double fitness = Roost.fitness(position);
+            if (fitness < bestSeenFitness) {
+                this.bestSeenFitness = fitness;
+                this.bestSeenPosition = position;
+            }
         }
+        
     }
 
     public double[] getPosition() {

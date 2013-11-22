@@ -86,7 +86,7 @@ public class App
         }
 
         for (int i = 0; i < nrOfBoids; i++) {
-            boids.add(new Boid(dimensions, boids));
+            boids.add(new Boid(dimensions, boids, null));
         }
         
         double[] bestGlobalPosition = new double[dimensions];
