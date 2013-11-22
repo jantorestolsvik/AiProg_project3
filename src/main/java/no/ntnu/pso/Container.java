@@ -12,7 +12,7 @@ public class Container {
 	double maxVolume = 1000;
 
 	public Container(ArrayList<Package> pK){
-            this.pK	= pK;
+            this.pK = pK;
             Dimentions = new int[pK.size()];
             int k = 0;
 //		double maxVal = 0;
@@ -122,7 +122,7 @@ public class Container {
                 }
             }
             if (weight > maxWeight) {
-                return -100;
+                return -1;
             }
             return sum;
         }

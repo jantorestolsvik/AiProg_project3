@@ -28,32 +28,41 @@ public class KnapsackProblem {
             
             XYSeries series = new XYSeries("Best global fitness");
             
-            int nrOfBoids = 100;
+            int nrOfBoids = 10;
             int dimensions = pK.size();
             
-            
-            for (int i = 0; i < nrOfBoids; i++) {
-                boids.add(new Boid(dimensions, boids, container));
-            }
+            for (int nrOfTries = 0; nrOfTries < 10; nrOfTries++) {
+                for (int i = 0; i < nrOfBoids; i++) {
+                    boids.add(new Boid(dimensions, boids, container));
+                }
 
-            double[] bestGlobalPosition = new double[dimensions];
-            double bestGlobalFitness = Double.MIN_VALUE;
-            int i = 0;
-            for (i = 0; i < 100; i++) {
-                for (Boid boid : boids) {
-                    double boidFitness = container.fitness(boid);
-                    if (boidFitness > bestGlobalFitness ) {
-                        bestGlobalFitness = boidFitness;
-                        bestGlobalPosition = boid.getPosition().clone();
+                double[] bestGlobalPosition = new double[dimensions];
+                double bestGlobalFitness = Double.MIN_VALUE;
+                int i = 0;
+                for (i = 0; i < 40; i++) {
+                    for (int boidIndex = 0; boidIndex < boids.size(); boidIndex++) {
+                        Boid boid = boids.get(boidIndex);
+                        double boidFitness = container.fitness(boid);
+                        while (boidFitness == -1) {                        
+                            boids.set(boidIndex, new Boid(dimensions, boids, container));
+                            boid = boids.get(boidIndex);
+                            boidFitness = container.fitness(boid);
+                        }
+                        if (boidFitness > bestGlobalFitness ) {
+                            bestGlobalFitness = boidFitness;
+                            bestGlobalPosition = boid.getPosition().clone();
+                        }
+                    }
+                    series.add(i,bestGlobalFitness);
+
+                    for (Boid boid : boids) {
+                        boid.nextIteration(bestGlobalPosition);
                     }
                 }
-                series.add(i,bestGlobalFitness);
-
-                for (Boid boid : boids) {
-                    boid.nextIteration(bestGlobalPosition);
-                }
+                System.out.println(bestGlobalFitness);
             }
-        
+            
+        /*
             // Add the series to your data set
             XYSeriesCollection dataset = new XYSeriesCollection();
             dataset.addSeries(series);
@@ -84,6 +93,6 @@ public class KnapsackProblem {
             f.pack();
             f.setLocation(200,200);
             f.setVisible(true);
-	
+	*/
         }
 }
