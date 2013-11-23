@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,21 +21,24 @@ import org.jfree.data.xy.XYSeriesCollection;
 public class KnapsackProblem {
 	int weightLimit = 1000;
 	int spaceLimit = 1000;
+	static List<KSBoid> boids = new ArrayList();
 
 	public static void main(String[] args) {
+		ArrayList<Package> pK = inputReader.read(null);
             
-            ArrayList<Package> pK = inputReader.read(null);
             
-            Container container = new Container(pK);
+//            Container container = new Container(pK);
             
+            
+        
             XYSeries series = new XYSeries("Best global fitness");
             
-            int nrOfBoids = 10;
+            int nrOfBoids = 100;
             int dimensions = pK.size();
             
-            for (int nrOfTries = 0; nrOfTries < 10; nrOfTries++) {
+            for (int nrOfTries = 0; nrOfTries < 1000; nrOfTries++) {
                 for (int i = 0; i < nrOfBoids; i++) {
-                    boids.add(new Boid(dimensions, boids, container));
+                    boids.add(new KSBoid(dimensions, boids, new Container(pK)));
                 }
 
                 double[] bestGlobalPosition = new double[dimensions];
@@ -41,25 +46,26 @@ public class KnapsackProblem {
                 int i = 0;
                 for (i = 0; i < 40; i++) {
                     for (int boidIndex = 0; boidIndex < boids.size(); boidIndex++) {
-                        Boid boid = boids.get(boidIndex);
-                        double boidFitness = container.fitness(boid);
+                        KSBoid boid = boids.get(boidIndex);
+                        double boidFitness = boid.fitness();
                         while (boidFitness == -1) {                        
-                            boids.set(boidIndex, new Boid(dimensions, boids, container));
+                            boid.nextIteration(bestGlobalPosition);
                             boid = boids.get(boidIndex);
-                            boidFitness = container.fitness(boid);
+                            boidFitness = boid.fitness();
                         }
                         if (boidFitness > bestGlobalFitness ) {
                             bestGlobalFitness = boidFitness;
-                            bestGlobalPosition = boid.getPosition().clone();
+                            bestGlobalPosition = boid.position.clone();
                         }
                     }
                     series.add(i,bestGlobalFitness);
 
-                    for (Boid boid : boids) {
+                    for (KSBoid boid : boids) {
                         boid.nextIteration(bestGlobalPosition);
                     }
                 }
-                System.out.println(bestGlobalFitness);
+                System.out.println(bestGlobalFitness + ":"+  nrOfTries);
+//                System.out.println(boids.get(4));
             }
             
         /*

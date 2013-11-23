@@ -108,8 +108,13 @@ public class Container {
 	}
 	@Override
 	public String toString() {
+		String reture = "Dimentions[";
+		for (int i = 0; i < Dimentions.length; i++) {
+			reture += Dimentions[i] + ",";
+		}
+		reture+= "]";
 		return "Container [weight=" + weight + ", volume=" + volume
-				+ ", value=" + value + "]";
+				+ ", value=" + value + "]" + reture;
 	}
 
         public double fitness(Boid boid) {
@@ -126,4 +131,5 @@ public class Container {
             }
             return sum;
         }
+ 
 }
