@@ -22,11 +22,7 @@ public class KnapsackProblem {
 	int weightLimit = 1000;
 	int spaceLimit = 1000;
 	static List<KSBoid> boids = new ArrayList();
-
-	public static void main(String[] args) {
-		KnapsackProblem kp = new KnapsackProblem();
-		kp.run(100,100,false);
-	}
+        
 	public void run(int nrOfBoids, int nrOfRuns, boolean volume){
 		ArrayList<Package> pK = inputReader.read(null);
 		if(!volume){
@@ -52,10 +48,14 @@ public class KnapsackProblem {
 			for (int boidIndex = 0; boidIndex < boids.size(); boidIndex++) {
 				KSBoid boid = boids.get(boidIndex);
 				boidFitness = boid.fitness();
+                                int counter = 1;
 				while (boidFitness == -1) {                        
-					boid.nextIteration(bestGlobalPosition);
-					boid = boids.get(boidIndex);
-					boidFitness = boid.fitness();
+                                    if (counter % 3 == 0) {
+                                        boid.explodeRandom();
+                                    } else {
+                                        boid.nextIteration(bestGlobalPosition);
+                                    }
+                                    boidFitness = boid.fitness();
 				}
 				if (boidFitness > bestGlobalFitness ) {
 					bestGlobalFitness = boidFitness;
@@ -70,8 +70,8 @@ public class KnapsackProblem {
 			}
 			
                         c.addDimentions(bestGlobalPosition);
-//			System.out.println(bestGlobalFitness + ":"+  nrOfTries);
-//			System.out.println(c);
+			System.out.println(bestGlobalFitness + ":"+  nrOfTries);
+			System.out.println(c);
                         series.add(nrOfTries, bestGlobalFitness);
                         
 			if(stagnantBoids>2*nrOfBoids){
