@@ -47,15 +47,7 @@ public class KSBoid {
 	public double fitness(){
 		int [] dim = new int [dimensions];
 		for (int i = 0; i < dimensions; i++) {
-			//			position[i] = clamp(position[i]);
 			dim[i]=(int) position[i];
-//			if(position[i]==1){
-//				//				position[i]=1.0;
-//				dim[i] = 1;
-//			}else{
-//				//				position[i]=0.0;
-//				dim[i] = 0;
-//			}
 		}
 		getContainer().addDimentions(dim);
 
