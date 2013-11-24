@@ -24,15 +24,21 @@ public class KnapsackProblem {
 	static List<KSBoid> boids = new ArrayList();
 
 	public static void main(String[] args) {
+		KnapsackProblem kp = new KnapsackProblem();
+		kp.run(100,100,false);
+	}
+	public void run(int nrOfBoids, int nrOfRuns, boolean volume){
 		ArrayList<Package> pK = inputReader.read(null);
-//		for (int i = 0; i < pK.size(); i++) {
-//			System.out.println(pK.get(i));
-//		}
+		if(!volume){
+			for (int i = 0; i < pK.size(); i++) {
+				pK.get(i).setVolume(0.0);
+			}
+			
+		}
 
 
 		XYSeries series = new XYSeries("Best global fitness");
 
-		int nrOfBoids =100;
 		int dimensions = pK.size();
 		int[] bestGlobalPosition = new int[dimensions];
 		double bestGlobalFitness = Double.MIN_VALUE;
@@ -42,7 +48,7 @@ public class KnapsackProblem {
 		for (int i = 0; i < nrOfBoids; i++) {
 			boids.add(new KSBoid(dimensions, boids, new Container(pK)));
 		}
-		for (int nrOfTries = 0; nrOfTries < 1000; nrOfTries++) {
+		for (int nrOfTries = 0; nrOfTries < nrOfRuns; nrOfTries++) {
 
 			double boidFitness;
 			//                int i = 0;
@@ -70,7 +76,7 @@ public class KnapsackProblem {
 			c.addDimentions(bestGlobalPosition);
 			System.out.println(bestGlobalFitness + ":"+  nrOfTries);
 			System.out.println(c);
-			if(stagnantBoids>2*nrOfBoids){
+			if(stagnantBoids>1*nrOfBoids){
 				stagnantBoids=0;
 //				System.out.println("BOOM!");
 				for (KSBoid boid : boids) {
@@ -115,5 +121,6 @@ public class KnapsackProblem {
             f.setLocation(200,200);
             f.setVisible(true);
 		 */
+		
 	}
 }
