@@ -77,6 +77,23 @@ public class Container {
 		
 		
 	}
+	public void movePackageForced(int i){
+		if(Dimentions[i]==1){
+			volume-=pK.get(i).getVolume();
+			value-=pK.get(i).getValue();
+			weight-=pK.get(i).getWeight();
+			Dimentions[i]=0;
+		}else{
+			volume+=pK.get(i).getVolume();
+			value+=pK.get(i).getValue();
+			weight+=pK.get(i).getWeight();
+			Dimentions[i]=1;
+		}
+	
+
+		
+		
+	}
 	public void calculateWeight(){
 		weight = 0;
 		for (int i = 0; i < Dimentions.length; i++) {
@@ -108,13 +125,13 @@ public class Container {
 	}
 	@Override
 	public String toString() {
-		String reture = "Dimentions[";
+		/*String reture = "Dimentions[";
 		for (int i = 0; i < Dimentions.length; i++) {
 			reture += Dimentions[i] + ",";
 		}
-		reture+= "]";
+		reture+= "]";/**/
 		return "Container [weight=" + weight + ", volume=" + volume
-				+ ", value=" + value + "]" + reture;
+				+ ", value=" + value + "]" /*+ reture/**/;
 	}
 
         public double fitness(Boid boid) {
