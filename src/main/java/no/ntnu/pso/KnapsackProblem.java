@@ -31,7 +31,7 @@ public class KnapsackProblem {
             int nrOfBoids = 10;
             int dimensions = pK.size();
             
-            for (int nrOfTries = 0; nrOfTries < 10; nrOfTries++) {
+            for (int nrOfTries = 0; nrOfTries < 1; nrOfTries++) {
                 for (int i = 0; i < nrOfBoids; i++) {
                     boids.add(new Boid(dimensions, boids, container));
                 }
@@ -39,7 +39,7 @@ public class KnapsackProblem {
                 double[] bestGlobalPosition = new double[dimensions];
                 double bestGlobalFitness = Double.MIN_VALUE;
                 int i = 0;
-                for (i = 0; i < 40; i++) {
+                for (i = 0; i < 200; i++) {
                     for (int boidIndex = 0; boidIndex < boids.size(); boidIndex++) {
                         Boid boid = boids.get(boidIndex);
                         double boidFitness = container.fitness(boid);
@@ -60,39 +60,44 @@ public class KnapsackProblem {
                     }
                 }
                 System.out.println(bestGlobalFitness);
+                
+                boolean showGraph = true;
+                if (showGraph) {
+                    // Add the series to your data set
+                    XYSeriesCollection dataset = new XYSeriesCollection();
+                    dataset.addSeries(series);
+                    // Generate the graph
+                    JFreeChart chart = ChartFactory.createXYLineChart(
+                        "Plot", // Title
+                        "timestep", // x-axis Label
+                        "value", // y-axis Label
+                        dataset, // Dataset
+                        PlotOrientation.VERTICAL, // Plot Orientation
+                        true, // Show Legend
+                        true, // Use tooltips
+                        false // Configure chart to generate URLs?
+                    );
+                    try {
+                        ChartUtilities.saveChartAsJPEG(new File("C:\\chart.jpg"), chart, 800, 600);
+                    } catch (IOException e) {
+                        System.err.println("Problem occurred creating chart.");
+                    }
+
+                    ImageIcon image = new ImageIcon("C:\\chart.jpg");
+                    JLabel label = new JLabel("", image, JLabel.CENTER);
+                    JPanel panel = new JPanel(new BorderLayout());
+                    panel.add( label, BorderLayout.CENTER );
+                    JFrame f = new JFrame();
+                    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    f.getContentPane().add(label);
+                    f.pack();
+                    f.setLocation(200,200);
+                    f.setVisible(true);
+                }
             }
             
-        /*
-            // Add the series to your data set
-            XYSeriesCollection dataset = new XYSeriesCollection();
-            dataset.addSeries(series);
-            // Generate the graph
-            JFreeChart chart = ChartFactory.createXYLineChart(
-                "Plot", // Title
-                "timestep", // x-axis Label
-                "value", // y-axis Label
-                dataset, // Dataset
-                PlotOrientation.VERTICAL, // Plot Orientation
-                true, // Show Legend
-                true, // Use tooltips
-                false // Configure chart to generate URLs?
-            );
-            try {
-                ChartUtilities.saveChartAsJPEG(new File("C:\\chart.jpg"), chart, 800, 600);
-            } catch (IOException e) {
-                System.err.println("Problem occurred creating chart.");
-            }
-
-            ImageIcon image = new ImageIcon("C:\\chart.jpg");
-            JLabel label = new JLabel("", image, JLabel.CENTER);
-            JPanel panel = new JPanel(new BorderLayout());
-            panel.add( label, BorderLayout.CENTER );
-            JFrame f = new JFrame();
-            f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            f.getContentPane().add(label);
-            f.pack();
-            f.setLocation(200,200);
-            f.setVisible(true);
-	*/
+        
+            
+	
         }
 }
