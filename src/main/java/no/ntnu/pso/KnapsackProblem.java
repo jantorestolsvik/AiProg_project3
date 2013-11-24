@@ -50,12 +50,13 @@ public class KnapsackProblem {
 				boidFitness = boid.fitness();
                                 int counter = 1;
 				while (boidFitness == -1) {                        
-                                    if (counter % 3 == 0) {
+                                    if (counter % 100 == 0) {
                                         boid.explodeRandom();
                                     } else {
                                         boid.nextIteration(bestGlobalPosition);
                                     }
                                     boidFitness = boid.fitness();
+                                    counter++;
 				}
 				if (boidFitness > bestGlobalFitness ) {
 					bestGlobalFitness = boidFitness;
