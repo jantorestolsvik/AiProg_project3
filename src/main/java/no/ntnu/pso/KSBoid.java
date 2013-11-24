@@ -22,14 +22,14 @@ public class KSBoid {
 		this.bestSeenPosition = new double[dimensions];
 		for (int i=0;i<dimensions;i++) {
 			this.position[i] = container.Dimentions[i];
-			this.velocity[i] = Math.random() * 8.0 - 4.0;
+			this.velocity[i] = Math.random() * 1.0 - 2.0;
 			this.bestSeenPosition[i] = this.position[i];
 		}
 		if (container != null) {
 			bestSeenFitness = fitness();
 		}
 		c1 = 1.2;
-		c2 = 0.3;
+		c2 = 0.2;
 		c3 = 1.0;
 	}
 	private double clamp(double value) {
