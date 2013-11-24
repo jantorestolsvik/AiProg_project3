@@ -8,6 +8,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class inputReader {
+	public static void main(String[] args) {
+		
+	}
 	/**
 	 * if url = null, standard is pso-packages.txt
 	 * @param url 
