@@ -53,19 +53,13 @@ public class KSBoid {
 
 		int pos;
 		while(getContainer().weight>getContainer().maxWeight||getContainer().volume>getContainer().maxVolume){
-//			System.out.println(container);
-						return -1;/*
-			pos = (int) (Math.random()*dimensions);
-			if(container.Dimentions[pos]==1){
-				container.movePackageForced(pos);
-			}/**/
+                    return -1;
 		}
 		return getContainer().value;
 	}
 
 	public void nextIteration(int[] bestGlobalPosition) {
 		for (int i = 0; i < dimensions; i++) {
-			//Not sure if r1 and r2 should be random every iteration
 			//New velocity
 			r1 = Math.random();
 			r2 = Math.random();
@@ -82,8 +76,7 @@ public class KSBoid {
 			position[i] = position[i] + velocity[i];
 //			position[i] = clamp(position[i]);
 
-//						System.out.println(position[i] + ":" + 1/(1+Math.exp(-position[i])));
-			if(Math.random()<position[i]/*Math.pow(1/(1+Math.exp(-position[i])),1)/**/){
+			if(Math.random()<position[i]){
 				position[i]=1;
 			}else{
 				position[i]=0;

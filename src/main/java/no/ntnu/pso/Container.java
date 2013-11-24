@@ -15,15 +15,10 @@ public class Container {
             this.pK = pK;
             Dimentions = new int[pK.size()];
             int k = 0;
-//		double maxVal = 0;
             for (int i = 0; i < 500; i++) {
                     k = (int) (Math.random()*2001);
-//			if(maxVal<value){
-//				maxVal =  value;
-//			}
                     movePackage(k);
             }	
-//		System.out.println(maxVal);
 	}
         
 	/**

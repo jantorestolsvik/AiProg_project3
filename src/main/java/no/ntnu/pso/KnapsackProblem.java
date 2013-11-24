@@ -33,9 +33,7 @@ public class KnapsackProblem {
 			for (int i = 0; i < pK.size(); i++) {
 				pK.get(i).setVolume(0.0);
 			}
-			
 		}
-
 
 		XYSeries series = new XYSeries("Best global fitness");
 
@@ -51,12 +49,6 @@ public class KnapsackProblem {
 		for (int nrOfTries = 0; nrOfTries < nrOfRuns; nrOfTries++) {
 
 			double boidFitness;
-			//                int i = 0;
-
-			//                for (i = 0; i < 40; i++) {
-			for (KSBoid boid : boids) {
-				boid.nextIteration(bestGlobalPosition);
-			}
 			for (int boidIndex = 0; boidIndex < boids.size(); boidIndex++) {
 				KSBoid boid = boids.get(boidIndex);
 				boidFitness = boid.fitness();
@@ -73,23 +65,25 @@ public class KnapsackProblem {
 					stagnantBoids++;
 				}
 			}
-			c.addDimentions(bestGlobalPosition);
-			System.out.println(bestGlobalFitness + ":"+  nrOfTries);
-			System.out.println(c);
-			if(stagnantBoids>1*nrOfBoids){
+                        for (KSBoid boid : boids) {
+				boid.nextIteration(bestGlobalPosition);
+			}
+			
+                        c.addDimentions(bestGlobalPosition);
+//			System.out.println(bestGlobalFitness + ":"+  nrOfTries);
+//			System.out.println(c);
+                        series.add(nrOfTries, bestGlobalFitness);
+                        
+			if(stagnantBoids>2*nrOfBoids){
 				stagnantBoids=0;
-//				System.out.println("BOOM!");
 				for (KSBoid boid : boids) {
 					boid.explodeRandom();
 				}
 			}
-			//                    series.add(i,bestGlobalFitness);
-
-			//                }
 
 		}
 
-		/*
+/*
             // Add the series to your data set
             XYSeriesCollection dataset = new XYSeriesCollection();
             dataset.addSeries(series);
@@ -120,7 +114,7 @@ public class KnapsackProblem {
             f.pack();
             f.setLocation(200,200);
             f.setVisible(true);
-		 */
+*/
 		
 	}
 }

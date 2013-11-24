@@ -23,8 +23,8 @@ public class Boid {
         this.position = new double[dimensions];
         this.bestSeenPosition = new double[dimensions];
         for (int i=0;i<dimensions;i++) {
-            this.position[i] = Math.random() * 2.0 - 1.8;
-            this.velocity[i] = Math.random() * 20.0 - 10.0;
+            this.position[i] = Math.random() * 10.0 - 5.0;
+            this.velocity[i] = Math.random() * 10.0 - 5.0;
             this.bestSeenPosition[i] = this.position[i];
         }
         if (container != null) {
@@ -43,7 +43,6 @@ public class Boid {
     
     public void nextIteration(double[] bestGlobalPosition) {
         for (int i = 0; i < dimensions; i++) {
-            //Not sure if r1 and r2 should be random every iteration
             //New velocity
             r1 = Math.random();
             r2 = Math.random();
