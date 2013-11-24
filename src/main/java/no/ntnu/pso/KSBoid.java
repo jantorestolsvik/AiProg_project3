@@ -22,7 +22,7 @@ public class KSBoid {
 		this.bestSeenPosition = new double[dimensions];
 		for (int i=0;i<dimensions;i++) {
 			this.position[i] = container.Dimentions[i];
-			this.velocity[i] = Math.random() * 2.5 - 1.0;
+			this.velocity[i] = Math.random() * 6.0 - 3.0;
 			this.bestSeenPosition[i] = this.position[i];
 		}
 		if (container != null) {
@@ -38,7 +38,7 @@ public class KSBoid {
 	public void explodeRandom(){
 		for (int i = 0; i < dimensions; i++) {
 		this.position[i] = Math.random() * 1.0 - 0.8;
-		this.velocity[i] = Math.random() * 2.5 - 1.0;
+		this.velocity[i] = Math.random() * 6.0 - 3.0;
 		this.bestSeenPosition[i] = this.position[i];
 		}
 	}

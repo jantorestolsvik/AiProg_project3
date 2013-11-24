@@ -50,7 +50,7 @@ public class KnapsackProblem {
 				boidFitness = boid.fitness();
                                 int counter = 1;
 				while (boidFitness == -1) {                        
-                                    if (counter % 100 == 0) {
+                                    if (counter % 1000 == 0) {
                                         boid.explodeRandom();
                                     } else {
                                         boid.nextIteration(bestGlobalPosition);
